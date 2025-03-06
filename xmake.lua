@@ -1,0 +1,27 @@
+add_rules("mode.debug", "mode.release")
+
+target("heap")
+    set_kind("static")
+    add_cflags("-std=c23")
+    add_files("src/heap/*.c")
+    add_includedirs("src/heap", {public = true})
+
+target("huffman")
+    set_kind("static")
+    add_cflags("-std=c23")
+    add_files("src/huffman/*.c")
+    add_deps("heap")
+    add_includedirs("src/huffman", {public = true})
+
+target("heap_test")
+    set_kind("binary")
+    add_cflags("-std=c23")
+    add_files("src/heap_test.c")
+    add_deps("heap")
+
+target("huffman_test")
+    set_kind("binary")
+    add_cflags("-std=c23")
+    add_files("src/huffman_test.c")
+    add_deps("huffman")
+    set_default()
