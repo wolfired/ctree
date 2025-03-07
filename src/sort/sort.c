@@ -94,10 +94,10 @@ void selection_sort(void*  data,
                  data + bytes_per_element * (left - 1),
                  data + bytes_per_element * marked_index,
                  bytes_per_element);
-
-        free(ex);
-        ex = NULL;
     }
+
+    free(ex);
+    ex = NULL;
 }
 
 void quick_sort(void*  data,
