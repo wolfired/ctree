@@ -173,35 +173,35 @@ void quick_sort(void*  data,
 
 static void merge(void*  dest,
                   void*  left,
-                  size_t left_sz,
+                  size_t left_element_count,
                   void*  right,
-                  size_t right_sz,
+                  size_t right_element_count,
                   size_t bytes_per_element,
                   SwapIf swap_if) {
-    size_t i = 0, j = 0, k = 0;
-    for(; i < left_sz && j < right_sz; ++k) {
-        if(!swap_if(left + bytes_per_element * i,
-                    right + bytes_per_element * j)) {
-            memcpy(dest + bytes_per_element * k,
-                   left + bytes_per_element * i,
+    size_t left_i = 0, right_i = 0, dest_i = 0;
+    for(; left_i < left_element_count && right_i < right_element_count; ++dest_i) {
+        if(!swap_if(left + bytes_per_element * left_i,
+                    right + bytes_per_element * right_i)) {
+            memcpy(dest + bytes_per_element * dest_i,
+                   left + bytes_per_element * left_i,
                    bytes_per_element);
-            ++i;
+            ++left_i;
         } else {
-            memcpy(dest + bytes_per_element * k,
-                   right + bytes_per_element * j,
+            memcpy(dest + bytes_per_element * dest_i,
+                   right + bytes_per_element * right_i,
                    bytes_per_element);
-            ++j;
+            ++right_i;
         }
     }
 
-    if(i < left_sz) {
-        memcpy(dest + bytes_per_element * k,
-               left + bytes_per_element * i,
-               bytes_per_element * (left_sz - i));
-    } else if(j < right_sz) {
-        memcpy(dest + bytes_per_element * k,
-               right + bytes_per_element * j,
-               bytes_per_element * (right_sz - j));
+    if(left_i < left_element_count) {
+        memcpy(dest + bytes_per_element * dest_i,
+               left + bytes_per_element * left_i,
+               bytes_per_element * (left_element_count - left_i));
+    } else if(right_i < right_element_count) {
+        memcpy(dest + bytes_per_element * dest_i,
+               right + bytes_per_element * right_i,
+               bytes_per_element * (right_element_count - right_i));
     }
 }
 
@@ -253,6 +253,7 @@ void merge_sort(void*  data,
     if(NULL == temp) { return; }
 
     merge_sort_pri(data, temp, bytes_per_element, element_count, swap_if);
+
     free(temp);
     temp = NULL;
 }
