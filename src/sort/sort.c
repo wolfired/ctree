@@ -16,6 +16,8 @@ void bubble_sort(void*  data,
 
     void* ex = malloc(bytes_per_element);
 
+    if(NULL == ex) { return; }
+
     for(size_t left = 1; left < element_count; ++left) {
         bool sorted = true;
         for(size_t right = element_count - 1; right >= left; --right) {
@@ -42,6 +44,8 @@ void insert_sort(void*  data,
     if(0 == bytes_per_element || 0 == element_count) { return; }
 
     void* marked_value = malloc(bytes_per_element);
+
+    if(NULL == marked_value) { return; }
 
     for(size_t right = 1; right < element_count; ++right) {
         memcpy(
@@ -75,6 +79,8 @@ void selection_sort(void*  data,
 
     void* ex = malloc(bytes_per_element);
 
+    if(NULL == ex) { return; }
+
     for(size_t left = 1; left < element_count; ++left) {
         size_t marked_index = left - 1;
         for(size_t right = left; right < element_count; ++right) {
@@ -100,12 +106,14 @@ void quick_sort(void*  data,
                 SwapIf swap_if) {
     if(0 == bytes_per_element || 0 == element_count) { return; }
 
-    if(8 > element_count) {
+    if(8 >= element_count) {
         insert_sort(data, bytes_per_element, element_count, swap_if);
         return;
     }
 
     void* ex = malloc(bytes_per_element);
+
+    if(NULL == ex) { return; }
 
     swap(ex,
          data + bytes_per_element * 1,
@@ -161,4 +169,90 @@ void quick_sort(void*  data,
 
     free(ex);
     ex = NULL;
+}
+
+static void merge(void*  dest,
+                  void*  left,
+                  size_t left_sz,
+                  void*  right,
+                  size_t right_sz,
+                  size_t bytes_per_element,
+                  SwapIf swap_if) {
+    size_t i = 0, j = 0, k = 0;
+    for(; i < left_sz && j < right_sz; ++k) {
+        if(!swap_if(left + bytes_per_element * i,
+                    right + bytes_per_element * j)) {
+            memcpy(dest + bytes_per_element * k,
+                   left + bytes_per_element * i,
+                   bytes_per_element);
+            ++i;
+        } else {
+            memcpy(dest + bytes_per_element * k,
+                   right + bytes_per_element * j,
+                   bytes_per_element);
+            ++j;
+        }
+    }
+
+    if(i < left_sz) {
+        memcpy(dest + bytes_per_element * k,
+               left + bytes_per_element * i,
+               bytes_per_element * (left_sz - i));
+    } else if(j < right_sz) {
+        memcpy(dest + bytes_per_element * k,
+               right + bytes_per_element * j,
+               bytes_per_element * (right_sz - j));
+    }
+}
+
+static void merge_sort_pri(void*  data,
+                           void*  temp,
+                           size_t bytes_per_element,
+                           size_t element_count,
+                           SwapIf swap_if) {
+    if(0 == bytes_per_element || 0 == element_count) { return; }
+
+    if(8 >= element_count) {
+        insert_sort(data, bytes_per_element, element_count, swap_if);
+        return;
+    }
+
+    size_t half = element_count / 2;
+
+    merge_sort_pri(data, temp, bytes_per_element, half, swap_if);
+    merge_sort_pri(data + bytes_per_element * half,
+                   temp + bytes_per_element * half,
+                   bytes_per_element,
+                   element_count - half,
+                   swap_if);
+
+    merge(temp,
+          data,
+          half,
+          data + bytes_per_element * half,
+          element_count - half,
+          bytes_per_element,
+          swap_if);
+
+    memcpy(data, temp, element_count);
+}
+
+void merge_sort(void*  data,
+                size_t bytes_per_element,
+                size_t element_count,
+                SwapIf swap_if) {
+    if(0 == bytes_per_element || 0 == element_count) { return; }
+
+    if(8 >= element_count) {
+        insert_sort(data, bytes_per_element, element_count, swap_if);
+        return;
+    }
+
+    uint8_t* temp = malloc(bytes_per_element * element_count);
+
+    if(NULL == temp) { return; }
+
+    merge_sort_pri(data, temp, bytes_per_element, element_count, swap_if);
+    free(temp);
+    temp = NULL;
 }

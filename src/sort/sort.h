@@ -27,4 +27,9 @@ void quick_sort(void*  data,
                 size_t element_count,
                 SwapIf swap_if);
 
+void merge_sort(void*  data,
+                size_t bytes_per_element,
+                size_t element_count,
+                SwapIf swap_if);
+
 #endif
