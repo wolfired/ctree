@@ -2,7 +2,6 @@
 #define HUFFMAN_H
 
 #include <stdint.h>
-#include <stdlib.h>
 
 typedef struct _HuffmanNode {
     struct _HuffmanNode* parent;
