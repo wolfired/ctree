@@ -1,0 +1,21 @@
+[
+{
+  "directory": "/home/link/workspace_git/ctree",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Isrc/heap", "-std=c23", "-o", "build/.objs/heap_test/linux/x86_64/debug/test/heap_test.c.o", "test/heap_test.c"],
+  "file": "test/heap_test.c"
+},
+{
+  "directory": "/home/link/workspace_git/ctree",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Isrc/heap", "-std=c23", "-o", "build/.objs/heap/linux/x86_64/debug/src/heap/heap.c.o", "src/heap/heap.c"],
+  "file": "src/heap/heap.c"
+},
+{
+  "directory": "/home/link/workspace_git/ctree",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Isrc/huffman", "-Isrc/heap", "-std=c23", "-o", "build/.objs/huffman/linux/x86_64/debug/src/huffman/huffman.c.o", "src/huffman/huffman.c"],
+  "file": "src/huffman/huffman.c"
+},
+{
+  "directory": "/home/link/workspace_git/ctree",
+  "arguments": ["/usr/bin/gcc", "-c", "-m64", "-g", "-O0", "-Isrc/huffman", "-Isrc/heap", "-std=c23", "-o", "build/.objs/huffman_test/linux/x86_64/debug/test/huffman_test.c.o", "test/huffman_test.c"],
+  "file": "test/huffman_test.c"
+}]
