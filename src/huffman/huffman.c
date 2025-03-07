@@ -9,7 +9,7 @@
 
 #include "huffman.h"
 
-static bool swap_check(void* element_child, void* element_parent) {
+static bool swap_if(void* element_child, void* element_parent) {
     HuffmanNode** p_element_child  = (HuffmanNode**)element_child;
     HuffmanNode** p_element_parent = (HuffmanNode**)element_parent;
 
@@ -100,7 +100,7 @@ void huffman_tree_init(HuffmanTree* thiz,
         ++freqs[((uint8_t*)src_bytes)[i]];
     }
 
-    Heap* heap = heap__new(sizeof(HuffmanNode*), FREQS_COUNT, swap_check, swap);
+    Heap* heap = heap__new(sizeof(HuffmanNode*), FREQS_COUNT, swap_if, swap);
 
     for(size_t i = 0; i < FREQS_COUNT; i++) {
         if(0 != freqs[i]) {
