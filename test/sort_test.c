@@ -12,10 +12,6 @@ bool swap_if(void const* lo, void const* hi) {
 }
 
 int main(int argc, char** argv) {
-    int const               a = 0;
-    int const* const        b = &a;
-    int const* const* const c = &b;
-
     char str[] = "78415962035412693871021589745";
     quick_sort(str, sizeof(char), strlen(str), swap_if);
     printf("%s\n", str);
