@@ -12,6 +12,8 @@ void bubble_sort(void*  data,
                  size_t bytes_per_element,
                  size_t element_count,
                  SwapIf swap_if) {
+    if(0 == bytes_per_element || 0 == element_count) { return; }
+
     void* ex = malloc(bytes_per_element);
 
     for(size_t left = 1; left < element_count; ++left) {
@@ -37,6 +39,8 @@ void insert_sort(void*  data,
                  size_t bytes_per_element,
                  size_t element_count,
                  SwapIf swap_if) {
+    if(0 == bytes_per_element || 0 == element_count) { return; }
+
     void* marked_value = malloc(bytes_per_element);
 
     for(size_t right = 1; right < element_count; ++right) {
@@ -67,6 +71,8 @@ void selection_sort(void*  data,
                     size_t bytes_per_element,
                     size_t element_count,
                     SwapIf swap_if) {
+    if(0 == bytes_per_element || 0 == element_count) { return; }
+
     void* ex = malloc(bytes_per_element);
 
     for(size_t left = 1; left < element_count; ++left) {
@@ -86,4 +92,73 @@ void selection_sort(void*  data,
         free(ex);
         ex = NULL;
     }
+}
+
+void quick_sort(void*  data,
+                size_t bytes_per_element,
+                size_t element_count,
+                SwapIf swap_if) {
+    if(0 == bytes_per_element || 0 == element_count) { return; }
+
+    if(8 > element_count) {
+        insert_sort(data, bytes_per_element, element_count, swap_if);
+        return;
+    }
+
+    void* ex = malloc(bytes_per_element);
+
+    swap(ex,
+         data + bytes_per_element * 1,
+         data + bytes_per_element * (element_count / 2),
+         bytes_per_element);
+    swap(ex,
+         data + bytes_per_element * 2,
+         data + bytes_per_element * (element_count - 1),
+         bytes_per_element);
+    insert_sort(data, bytes_per_element, 3, swap_if);
+    swap(ex,
+         data + bytes_per_element * 2,
+         data + bytes_per_element * (element_count - 1),
+         bytes_per_element);
+
+    size_t left  = 2;
+    size_t right = element_count - 2;
+
+    while(left <= right) {
+        while(left <= right) {
+            if(!swap_if(data + bytes_per_element * 1,
+                        data + bytes_per_element * left)) {
+                break;
+            }
+            ++left;
+        }
+        while(left <= right) {
+            if(swap_if(data + bytes_per_element * 1,
+                       data + bytes_per_element * right)) {
+                break;
+            }
+            --right;
+        }
+        if(left < right) {
+            swap(ex,
+                 data + bytes_per_element * left,
+                 data + bytes_per_element * right,
+                 bytes_per_element);
+            ++left;
+            --right;
+        }
+    }
+    swap(ex,
+         data + bytes_per_element * 1,
+         data + bytes_per_element * right,
+         bytes_per_element);
+
+    quick_sort(data, bytes_per_element, right, swap_if);
+    quick_sort(data + bytes_per_element * left,
+               bytes_per_element,
+               element_count - left,
+               swap_if);
+
+    free(ex);
+    ex = NULL;
 }

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-typedef bool (*SwapIf)(void* lo, void* hi);
+typedef bool (*SwapIf)(void const* lo, void const* hi);
 
 void bubble_sort(void*  data,
                  size_t bytes_per_element,
@@ -21,5 +21,10 @@ void selection_sort(void*  data,
                     size_t bytes_per_element,
                     size_t element_count,
                     SwapIf swap_if);
+
+void quick_sort(void*  data,
+                size_t bytes_per_element,
+                size_t element_count,
+                SwapIf swap_if);
 
 #endif
