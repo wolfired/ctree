@@ -13,10 +13,9 @@ void bubble_sort(void*  data,
                  size_t bytes_per_element,
                  size_t element_count,
                  SwapIf swap_if) {
-    if(0 == bytes_per_element || 0 == element_count) { return; }
+    if(NULL == data || 0 == bytes_per_element || 2 > element_count) { return; }
 
     void* ex_buff = malloc(bytes_per_element);
-
     if(NULL == ex_buff) { return; }
 
     for(size_t left = 1; left < element_count; ++left) {
@@ -42,10 +41,9 @@ void insert_sort(void*  data,
                  size_t bytes_per_element,
                  size_t element_count,
                  SwapIf swap_if) {
-    if(0 == bytes_per_element || 0 == element_count) { return; }
+    if(NULL == data || 0 == bytes_per_element || 2 > element_count) { return; }
 
     void* marked_value = malloc(bytes_per_element);
-
     if(NULL == marked_value) { return; }
 
     for(size_t right = 1; right < element_count; ++right) {
@@ -76,10 +74,9 @@ void selection_sort(void*  data,
                     size_t bytes_per_element,
                     size_t element_count,
                     SwapIf swap_if) {
-    if(0 == bytes_per_element || 0 == element_count) { return; }
+    if(NULL == data || 0 == bytes_per_element || 2 > element_count) { return; }
 
     void* ex_buff = malloc(bytes_per_element);
-
     if(NULL == ex_buff) { return; }
 
     for(size_t left = 1; left < element_count; ++left) {
@@ -105,27 +102,26 @@ void quick_sort(void*  data,
                 size_t bytes_per_element,
                 size_t element_count,
                 SwapIf swap_if) {
-    if(0 == bytes_per_element || 0 == element_count) { return; }
+    if(NULL == data || 0 == bytes_per_element || 2 > element_count) { return; }
 
     if(8 >= element_count) {
         insert_sort(data, bytes_per_element, element_count, swap_if);
         return;
     }
 
-    void* buff = malloc(bytes_per_element);
+    void* ex_buff = malloc(bytes_per_element);
+    if(NULL == ex_buff) { return; }
 
-    if(NULL == buff) { return; }
-
-    swap(buff,
+    swap(ex_buff,
          data + bytes_per_element * 1,
          data + bytes_per_element * (element_count / 2),
          bytes_per_element);
-    swap(buff,
+    swap(ex_buff,
          data + bytes_per_element * 2,
          data + bytes_per_element * (element_count - 1),
          bytes_per_element);
     insert_sort(data, bytes_per_element, 3, swap_if);
-    swap(buff,
+    swap(ex_buff,
          data + bytes_per_element * 2,
          data + bytes_per_element * (element_count - 1),
          bytes_per_element);
@@ -149,7 +145,7 @@ void quick_sort(void*  data,
             --right;
         }
         if(left < right) {
-            swap(buff,
+            swap(ex_buff,
                  data + bytes_per_element * left,
                  data + bytes_per_element * right,
                  bytes_per_element);
@@ -157,7 +153,7 @@ void quick_sort(void*  data,
             --right;
         }
     }
-    swap(buff,
+    swap(ex_buff,
          data + bytes_per_element * 1,
          data + bytes_per_element * right,
          bytes_per_element);
@@ -168,8 +164,8 @@ void quick_sort(void*  data,
                element_count - left,
                swap_if);
 
-    free(buff);
-    buff = NULL;
+    free(ex_buff);
+    ex_buff = NULL;
 }
 
 static void merge(void*  dest,
@@ -213,7 +209,7 @@ static void merge_sort_pri(void*  data,
                            size_t bytes_per_element,
                            size_t element_count,
                            SwapIf swap_if) {
-    if(0 == bytes_per_element || 0 == element_count) { return; }
+    if(NULL == data || 0 == bytes_per_element || 2 > element_count) { return; }
 
     if(8 >= element_count) {
         insert_sort(data, bytes_per_element, element_count, swap_if);
@@ -244,7 +240,7 @@ void merge_sort(void*  data,
                 size_t bytes_per_element,
                 size_t element_count,
                 SwapIf swap_if) {
-    if(0 == bytes_per_element || 0 == element_count) { return; }
+    if(NULL == data || 0 == bytes_per_element || 2 > element_count) { return; }
 
     if(8 >= element_count) {
         insert_sort(data, bytes_per_element, element_count, swap_if);
@@ -252,7 +248,6 @@ void merge_sort(void*  data,
     }
 
     uint8_t* temp = malloc(bytes_per_element * element_count);
-
     if(NULL == temp) { return; }
 
     merge_sort_pri(data, temp, bytes_per_element, element_count, swap_if);
