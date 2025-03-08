@@ -6,10 +6,10 @@
 
 #include <sort.h>
 
-bool swap_if(void const* lo, void const* hi) {
-    char const* p_lo = (char*)lo;
-    char const* p_hi = (char*)hi;
-    return *p_lo > *p_hi;
+bool swap_if(void const* left, void const* right) {
+    char const* left_ptr  = (char*)left;
+    char const* right_ptr = (char*)right;
+    return *left_ptr > *right_ptr;
 }
 
 int main(int argc, char** argv) {

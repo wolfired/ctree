@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-typedef bool (*SwapIf)(void const* lo, void const* hi);
+typedef bool (*SwapIf)(void const* left, void const* right);
 
 void bubble_sort(void*  data,
                  size_t bytes_per_element,
