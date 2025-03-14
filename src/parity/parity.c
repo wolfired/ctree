@@ -66,5 +66,5 @@ void parity_calc(Parity         parity,
         count += ones_count_in_byte[bytes[i]];
     }
 
-    *parity_bit_lsb = Even == parity ? count % 2 : 1 >> count % 2;
+    *parity_bit_lsb = Even == parity ? count % 2 : 1 - count % 2;
 }
