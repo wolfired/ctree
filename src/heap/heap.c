@@ -44,7 +44,7 @@ void heap_init(Heap* thiz, void* src_bytes, size_t src_len) {
 void heap_insert(Heap* thiz, void* element) {
     if(thiz->cap <= thiz->len) { return; }
 
-    memcpy(thiz->bytes + thiz->len * thiz->bytes_per_element,
+    memcpy((uint8_t*)thiz->bytes + thiz->len * thiz->bytes_per_element,
            element,
            thiz->bytes_per_element);
     ++thiz->len;
@@ -57,7 +57,7 @@ bool heap_pop(Heap* thiz, void* move_out) {
 
     memcpy(move_out, thiz->bytes, thiz->bytes_per_element);
     memcpy(thiz->bytes,
-           thiz->bytes + (thiz->len - 1) * thiz->bytes_per_element,
+           (uint8_t*)thiz->bytes + (thiz->len - 1) * thiz->bytes_per_element,
            thiz->bytes_per_element);
     --thiz->len;
 
@@ -78,20 +78,20 @@ void heap_heapify_down(Heap* thiz, size_t i) {
         size_t s = i;
 
         if(l < thiz->len &&
-           thiz->swap_check(thiz->bytes + l * thiz->bytes_per_element,
-                            thiz->bytes + s * thiz->bytes_per_element)) {
+           thiz->swap_check((uint8_t*)thiz->bytes + l * thiz->bytes_per_element,
+                            (uint8_t*)thiz->bytes + s * thiz->bytes_per_element)) {
             s = l;
         }
         if(r < thiz->len &&
-           thiz->swap_check(thiz->bytes + r * thiz->bytes_per_element,
-                            thiz->bytes + s * thiz->bytes_per_element)) {
+           thiz->swap_check((uint8_t*)thiz->bytes + r * thiz->bytes_per_element,
+                            (uint8_t*)thiz->bytes + s * thiz->bytes_per_element)) {
             s = r;
         }
 
         if(s == i) { break; }
 
-        thiz->swap(thiz->bytes + i * thiz->bytes_per_element,
-                   thiz->bytes + s * thiz->bytes_per_element);
+        thiz->swap((uint8_t*)thiz->bytes + i * thiz->bytes_per_element,
+                   (uint8_t*)thiz->bytes + s * thiz->bytes_per_element);
 
         i = s;
     }
@@ -102,13 +102,13 @@ void heap_heapify_up(Heap* thiz, size_t i) {
         if(0 == i) { break; }
         size_t p = (i - 1) >> 1;
 
-        if(!thiz->swap_check(thiz->bytes + i * thiz->bytes_per_element,
-                             thiz->bytes + p * thiz->bytes_per_element)) {
+        if(!thiz->swap_check((uint8_t*)thiz->bytes + i * thiz->bytes_per_element,
+                             (uint8_t*)thiz->bytes + p * thiz->bytes_per_element)) {
             break;
         }
 
-        thiz->swap(thiz->bytes + i * thiz->bytes_per_element,
-                   thiz->bytes + p * thiz->bytes_per_element);
+        thiz->swap((uint8_t*)thiz->bytes + i * thiz->bytes_per_element,
+                   (uint8_t*)thiz->bytes + p * thiz->bytes_per_element);
 
         i = p;
     }

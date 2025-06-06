@@ -104,7 +104,7 @@ void huffman_tree_init(HuffmanTree* thiz,
 
     for(size_t i = 0; i < FREQS_COUNT; i++) {
         if(0 != freqs[i]) {
-            printf("%c -> %zd\n", (char)i, freqs[i]);
+            printf("%c -> %d\n", (char)i, freqs[i]);
             HuffmanNode* h = huffman_node__new();
             h->data        = i;
             h->freq        = freqs[i];
